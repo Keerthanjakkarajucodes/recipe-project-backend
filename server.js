@@ -4,10 +4,13 @@ import morgan from "morgan";
 import connectDB from "./src/config/db.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import recipeRoutes from "./src/routes/recipeRoutes.js";
+import cors from "cors";
 
 dotenv.config();
 
 connectDB();
+
+app.use(cors());
 
 const app=express();
 
