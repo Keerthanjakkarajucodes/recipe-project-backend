@@ -1,14 +1,13 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"; 
 
+// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
-// @desc   Register new user
-// @route  POST /api/user/register
-// @access Public
+// ---------------- Register ----------------
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, mobile } = req.body;
@@ -40,9 +39,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// @desc   Login user
-// @route  POST /api/user/login
-// @access Public
+// ---------------- Login ----------------
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -64,29 +61,24 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// @desc   Get user profile
-// @route  GET /api/user/profile
-// @access Private
+// ---------------- Get Profile ----------------
 export const getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
-    if (!user) {
+    if (!req.user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user);
+    res.json(req.user);   // ✅ req.user already attached by protect
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// @desc   Change password
-// @route  PUT /api/user/change-password
-// @access Private
+// ---------------- Change Password ----------------
 export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
+    const user = req.user;   // ✅ already loaded in protect
 
-    const user = await User.findById(req.user._id || req.user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -98,10 +90,8 @@ export const changePassword = async (req, res) => {
     user.password = await bcrypt.hash(newPassword, salt);
 
     await user.save();
-
     res.json({ message: "Password updated successfully!" });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
