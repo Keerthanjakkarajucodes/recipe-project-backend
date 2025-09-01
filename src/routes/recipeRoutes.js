@@ -10,13 +10,13 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+// Public Routes
+router.get("/", getRecipes);
+router.get("/:id", getRecipeById);
 
-router.get("/", getRecipes);         
-router.get("/:id", getRecipeById);   
-
-
-router.post("/", protect, createRecipe);        
-router.put("/:id", protect, updateRecipe);       
-router.delete("/:id", protect, deleteRecipe);    
+// Protected Routes
+router.post("/", protect, createRecipe);
+router.put("/:id", protect, updateRecipe);
+router.delete("/:id", protect, deleteRecipe);
 
 export default router;

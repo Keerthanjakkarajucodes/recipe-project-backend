@@ -35,37 +35,29 @@ const recipeSchema = new mongoose.Schema(
       default: "",
     },
     prepTime: {
-      type: Number, // minutes
+      type: Number, // in minutes
       default: 0,
     },
     cookTime: {
-      type: Number, // minutes
+      type: Number, // in minutes
       default: 0,
     },
     tags: {
       type: [String],
       default: [],
     },
-    isPublished: {
-      type: Boolean,
-      default: true,
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );
 
-// 🔎 Text index for searching (title, description, ingredients)
+// 🔎 Search index
 recipeSchema.index({
   title: "text",
   description: "text",
   ingredients: "text",
 });
 
-// 📌 Instance method (per recipe)
+// 📌 Instance method
 recipeSchema.methods.summary = function () {
   return {
     id: this._id,
@@ -75,9 +67,9 @@ recipeSchema.methods.summary = function () {
   };
 };
 
-// 📌 Static method (all recipes)
+// 📌 Static method
 recipeSchema.statics.findByAuthor = function (authorId) {
-  return this.find({ user: authorId, isDeleted: false });
+  return this.find({ user: authorId });
 };
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
