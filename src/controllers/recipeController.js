@@ -1,6 +1,6 @@
 import Recipe from "../models/Recipe.js";
 
-// ✅ Create Recipe
+
 export const createRecipe = async (req, res) => {
   try {
     const recipe = new Recipe({ ...req.body, user: req.user._id });
@@ -11,7 +11,7 @@ export const createRecipe = async (req, res) => {
   }
 };
 
-// ✅ Get All Recipes
+
 export const getRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find().populate("user", "name email");
@@ -21,7 +21,7 @@ export const getRecipes = async (req, res) => {
   }
 };
 
-// ✅ Get Recipe by ID
+
 export const getRecipeById = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id).populate("user", "name email");
@@ -32,7 +32,7 @@ export const getRecipeById = async (req, res) => {
   }
 };
 
-// ✅ Update Recipe (real DB update)
+
 export const updateRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
@@ -54,7 +54,7 @@ export const updateRecipe = async (req, res) => {
   }
 };
 
-// ✅ Hard Delete Recipe
+
 export const deleteRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);

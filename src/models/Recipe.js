@@ -35,11 +35,11 @@ const recipeSchema = new mongoose.Schema(
       default: "",
     },
     prepTime: {
-      type: Number, // in minutes
+      type: Number, 
       default: 0,
     },
     cookTime: {
-      type: Number, // in minutes
+      type: Number, 
       default: 0,
     },
     tags: {
@@ -57,7 +57,7 @@ recipeSchema.index({
   ingredients: "text",
 });
 
-// 📌 Instance method
+
 recipeSchema.methods.summary = function () {
   return {
     id: this._id,
@@ -67,7 +67,7 @@ recipeSchema.methods.summary = function () {
   };
 };
 
-// 📌 Static method
+
 recipeSchema.statics.findByAuthor = function (authorId) {
   return this.find({ user: authorId });
 };
